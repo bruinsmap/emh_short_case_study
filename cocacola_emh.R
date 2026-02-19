@@ -9,6 +9,7 @@ library(dplyr)
 
 ###AUTHOR: BRUINSMA PATRIK R11V3S
 setwd("C:\\Econometrics2")
+if(!dir.exists("figures")) dir.create("figures")
 loadfonts(device = "win")
 ko <- getSymbols("KO", from="2014-01-01", to="2019-01-01",
            auto.assign = FALSE)
@@ -51,8 +52,12 @@ ggplot(df, aes(x=date))+
        caption = "Source: Yahoo Finance",
        color="Stock")+
   theme(text = element_text(family = "Time New Roman"))
+ggsave("figures/log_returns.png", width = 10, height = 6)
 
+png("figures/ko_ts.png", width = 800, height = 600)
 plot.ts(df$KO.Close)
+dev.off()
+
 adf.test(df$ld_ko)
 adf.test(df$ld_pep)
 adf.test(df$ld_sp)
@@ -62,10 +67,12 @@ summary(ur.df(df$ld_sp, type ="trend", lags = 20, selectlags = "BIC"))
 summary(ur.df(df$ld_sugar, type ="trend", lags = 20, selectlags = "BIC"))
 
 
+png("figures/acf_pacf.png", width = 800, height = 800)
 par(family = "Times New Roman")
 par(mfrow=c(2,1))
 acf(df$ld_ko, main="Autocorrelation of Log Difference of Coca-Cola")
 pacf(df$ld_ko, main="Partial Autocorrelation of Log Difference of Coca-Cola")
+dev.off()
 
 
 fit1 <- arima(df$ld_ko, order = c(2,0,0))
@@ -92,6 +99,7 @@ AIC(fit4, fit5, fit6, fit8, fit1)
 ggplot(df, aes(x=date))+
   geom_line(aes(y=ld_ko, colour = "Original"), size=1)+
   geom_line(aes(y=fitted(fit4), colour = "Estimated"), size=1) 
+ggsave("figures/original_vs_estimated.png", width = 10, height = 6)
 
 #final model
 model <- Arima(log(df$KO.Close), order = c(2,1,0), xreg = df$ld_pep)
@@ -110,6 +118,7 @@ ggplot(df, aes(x=date))+
        color= "",
        caption = "Source: Yahoo Finance")+
   theme(text = element_text(family = "Time New Roman"))
+ggsave("figures/model_performance_log.png", width = 10, height = 6)
 
 ggplot(df, aes(x=date))+
   geom_line(aes(y=df$KO.Close, color = "Stock Price of Coca-Cola"), size = 1)+
@@ -120,6 +129,7 @@ ggplot(df, aes(x=date))+
        color= "",
        caption = "Source: Yahoo Finance")+
   theme(text = element_text(family = "Time New Roman"))
+ggsave("figures/model_performance_stock.png", width = 10, height = 6)
 
 #forecasting
 predar <- predict(ar, n.ahead = 5)
@@ -150,6 +160,7 @@ ggplot(dffilter, aes(x=date))+
        caption="Source: Yahoo Finance",
        color="")+
   theme(text = element_text(family = "Times New Roman"))
+ggsave("figures/forecast.png", width = 10, height = 6)
 
 summary <- capture.output(summary(model))
 
