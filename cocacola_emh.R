@@ -8,7 +8,6 @@ library(extrafont)
 library(dplyr)
 
 ###AUTHOR: BRUINSMA PATRIK R11V3S
-setwd("C:\\Econometrics2")
 if(!dir.exists("figures")) dir.create("figures")
 loadfonts(device = "win")
 ko <- getSymbols("KO", from="2014-01-01", to="2019-01-01",

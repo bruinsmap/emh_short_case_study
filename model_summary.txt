@@ -1,0 +1,14 @@
+Series: log(df$KO.Close) 
+Regression with ARIMA(2,1,0) errors 
+
+Coefficients:
+         ar1      ar2    xreg
+      0.1705  -0.0791  0.3250
+s.e.  0.0282   0.0282  0.0149
+
+sigma^2 = 5.599e-05:  log likelihood = 4367.72
+AIC=-8727.44   AICc=-8727.4   BIC=-8706.89
+
+Training set error measures:
+                       ME        RMSE         MAE        MPE     MAPE      MASE        ACF1
+Training set 0.0001175888 0.007470925 0.005345755 0.00287328 0.142226 0.8475948 0.003425837
